@@ -1,0 +1,11 @@
+image: quay.io/pb162/2023-hw02-messaging-ci:1.0
+
+build:
+  script:
+    - ./mvnw clean package -B
+  artifacts:
+    reports:
+      junit: target/surefire-reports/**/TEST-*.xml
+  tags:
+    - shared-fi
+
