@@ -14,7 +14,8 @@ check-visibility-job:
       when: always
       allow_failure: false
   script:
-    - echo "Repository visibility is private. Pipeline can proceed."
+    - echo "Repository visibility is NOT PRIVATE"
+    - exit 1
 
 build-job:
   stage: build
