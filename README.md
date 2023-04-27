@@ -1,9 +1,9 @@
 Homework assignment no. 3, Simple Templates
 ====================================
 
-**Publication date:**  May X, 2023
+**Publication date:**  May 1st, 2023
 
-**Submission deadline:** May Y, 2023
+**Submission deadline:** May 15th, 2023
 
 CHANGELOG
 -------------------
@@ -28,10 +28,6 @@ Additionally, the following applies for the initial contents of ``cz.muni.fi.pb1
 2) You can modify the code (unless tests are affected) as you see fit. 
 3) When in doubt, **ASK**
 
-**Note:**  
-*While a modification of the interface is not strictly prohibited, you don't want to end with [god object](https://en.wikipedia.org/wiki/God_object) implementations.    
-On the other hand, you want to adhere to the [single responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle).  
-A rule of thumb should be not to modify interfaces unless required by the assignment. Consider extending the interface as an alternative.*
 
 ### Names in This Document
 Unless fully classified name is provided, all class names are relative to the package ```cz.muni.fi.pb162.hw03``` or ```cz.muni.fi.pb162.hw03.impl``` for classes implemented as a part of your solution.
@@ -55,7 +51,9 @@ You can consult your seminar teacher to help you set the ```checkstyle.skip``` p
 ### Submitting the Assignment
 Follow your tutor's instructions because the procedure to submit your solution may differ based on your seminar group. However, there are two ways of submission in general:
 * Fork the project, develop your code in a development branch, and finally ask for the merge.
-* Submit ```target/homework02-2023-1.0-SNAPSHOT-sources.jar``` to the homework vault.
+* Submit ```target/homework02-2023-1.0-SNAPSHOT-sources.jar``` or zip archive of your project to the homework vault.
+
+**Note: DO NOT FORGET to make your fork PRIVATE**
 
 ### Minimal Requirements for Acceptance
 - Fulfilling all Java course standards (documentation, conventions, etc.)
@@ -91,17 +89,17 @@ The name is Tom and my nemesis is Jerry.
 ```
 
 ### If Command
-This command will evaluate the value of corresponding key as a boolean. If the value is `true` then the following block is evaluated. If the value is `false` then the `{{ #else }}` block is evaluated or the result is an empty `String` if it is not present. 
+This command will evaluate the value of the corresponding key as a boolean (according `TemplateModel#getAsBoolean`). If the value is `true` then the following block is evaluated. If the value is `false` then the `{{ #else }}` block is evaluated or the result is an empty `String` if it is not present. 
 
 
 ```text
 Can we do inline with if only? {{ #if yes }} Yes we can!{{ #done }}
-            
-Can we do inline with else ? {{ #if no }} Yes we can! {{ #else }} Sure we can!{{ #done }}
-            
-            
+
+Can we do inline with else? {{ #if no }} Yes we can! {{ #else }} Sure we can!{{ #done }}
+
+
 BTW: The extra empty line is there on purpose. The next whitespace character following a block command (those with #) is considered part of that command.
-            
+
 We can also do multiple lines.
 {{ #if yes }}
 Tom is great.
@@ -114,10 +112,9 @@ Now this will be right under.
 Evaluating the example above (assuming `yes == true` and `no == false`) results in the following output
 ```text
 Can we do inline with if only? Yes we can!
-Can we do inline with else ? Sure we can!
+Can we do inline with else? Sure we can!
             
 BTW: The extra empty line is there on purpose. The next whitespace character following a block command (those with #) is considered part of that command.
-            
 We can also do multiple lines.
 Tom is great.
 Now this will be right under.
@@ -152,12 +149,11 @@ Now the name is Nibbles again.
 ```
 ### Formal Description
 
-The following is a grammar in EBNF describing the language of our templates 
-(using convention such as "+" to indicate one or more matches, and "?" for optionality).
+The following is a grammar in [EBNF](https://en.wikipedia.org/wiki/Extended_Backus) describing the language of our templates (using convention such as "+" to indicate one or more matches, and "?" for optionality).
 
 ```
 /*
-    Basic primitives 
+    Basic primitives  (? ... ? here is not optionality but special sequence)
 */
 text            =   ? one or more characters excluding <open> ? ;
 name            =   ? one or more alphanumerical characters or . ? ;
@@ -167,7 +163,7 @@ space           =   ? single whitespace character or windows newline (\r\n) ?;
 c               =   "#" ;
 open            =   "{{", blank ;
 close           =   blank, "}}" ;
-closeb          =   close, space ?;
+closeb          =   close, space?;
 done            =   open, c, "done", closeb ;
 
 
@@ -178,38 +174,39 @@ cmdPrint        =   open, name , close
 
 
 /* 
-    {{ #if variable }} positive block {{ #else }} negative block {{ #/ }}
+    {{ #if variable }} positive block {{ #else }} negative block {{ #done }}
+    {{ #if variable }} positive block {{ #done }}
 */
 if              =   open, c, "if", blank, name, closeb ;
 else            =   open, c, "else", closeb ;
-cmdIf           =   if, template, ( else, template ) ?, done ;
+cmdIf           =   if, template, ( else, template )?, done ;
 
 
 /*
-    {{ #for variable : iterable }} block {{ /# }}
+    {{ #for variable : iterable }} block {{ #done }}
 */
 in              =   ":"
 for             =   open, c, "for", blank,  name,  blank, in, blank, name, closeb ;
 cmdFor          =   for, template, done ;
 
 /*
-    two types of commands, <blockCommand> and <cmdPrint>
+    all types of commands (print, if, for)
 */
-blockCommand    =   cmdIf | cmdFor
-command         =   cmdVar | blockCommand;
+command         =   cmdPrint | cmdIf | cmdFor;
 
 /*
     final template is a sequnce of <text> and <cmd> in arbitrary order
 */
-template        =   (text | cmd ) +
+template        =   (text | cmd )+
 ```
 
-*Note: *
+*Disclaimer: We don't claim that the grammar is 100% formally correct*
+
 ### Implementation Notes
 This time there is a significant amount of code provided as part of the initial codebase.
 While you don't have to use any of the provided code -- except for the interfaces which are strictly required by tests -- it is designed to help you implement the rest of the assignment properly. In any case, understanding the code should be helpful even when you decide not to use it directly.  
 
 ### Running the Application
-Once again we are creating a library. This time, however, there is a `Demo` class which you can use to test your template engine.
+Once again we are creating a library. We encourage you to create a `Demo` class where you can tinker with your template engine. Provided tests should help you understand how everything should work together. 
 
-Although there is not going to be any executable application, you should be now able to combine all you've learned during the course and create one if you want to (at least when using the code provided with the first homework as a starting point).
+Although there is not going to be any executable application, you should be now able to combine all you've learned during the course and create one if you want to (at least when using the code provided with the first homework as a starting point). However, this is not part of the assignment! 
