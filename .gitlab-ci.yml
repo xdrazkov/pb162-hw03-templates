@@ -1,11 +1,28 @@
-image: quay.io/pb162/2023-hw02-messaging-ci:1.0
+default:
+  tags:
+    - shared-fi
+  image: quay.io/pb162/2023-hw02-messaging-ci:1.0
 
-build:
+stages:
+  - check
+  - build
+
+check-visibility-job:
+  stage: check
+  rules:
+    - if: $CI_PROJECT_VISIBILITY != "private"
+      when: always
+      allow_failure: false
+  script:
+    - echo "Repository visibility is private. Pipeline can proceed."
+
+build-job:
+  stage: build
+  except:
+    - main
   script:
     - ./mvnw clean package -B
   artifacts:
     reports:
       junit: target/surefire-reports/**/TEST-*.xml
-  tags:
-    - shared-fi
 
