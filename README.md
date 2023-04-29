@@ -7,6 +7,7 @@ Homework assignment no. 3, Simple Templates
 
 CHANGELOG
 -------------------
+- 29.4.2023: Fixed extension value in FileTemplateTest#shouldFailToLoadMalformedTemplate
 
 General information
 -------------------

@@ -100,7 +100,7 @@ public class FileTemplateTest extends TestBase {
         var file = testExtra.resolve(name + "." + EXT);
         // then
         Assertions.assertThatExceptionOfType(TemplateException.class)
-                .isThrownBy(() ->  engine.loadTemplate(file, StandardCharsets.UTF_8, Inputs.IF_ELSE_MISSING_DONE));
+                .isThrownBy(() ->  engine.loadTemplate(file, StandardCharsets.UTF_8, EXT));
     }
 
     @Test
