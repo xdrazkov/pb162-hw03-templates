@@ -149,7 +149,7 @@ Now the name is Nibbles again.
 ```
 ### Formal Description
 
-The following is a grammar in [EBNF](https://en.wikipedia.org/wiki/Extended_Backus) describing the language of our templates (using convention such as "+" to indicate one or more matches, and "?" for optionality).
+The following is a grammar in [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) describing the language of our templates (using convention such as "+" to indicate one or more matches, and "?" for optionality).
 
 ```
 /*
