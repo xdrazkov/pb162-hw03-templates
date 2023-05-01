@@ -7,7 +7,35 @@ Homework assignment no. 3, Simple Templates
 
 CHANGELOG
 -------------------
+- 1.5.2023: Fixed file name `malformed.txt..tpl -> malformed.txt.tpl`
 - 29.4.2023: Fixed extension value in FileTemplateTest#shouldFailToLoadMalformedTemplate
+
+
+### Pulling changes
+The following script displays how to pull new changes.
+The script adds the assignment repository as a new remote under the name *pb162* and uses  `<impl>` as a placeholder for the implementation branch.
+
+```bash
+# Add assignment remote as pb162 (skip if you already have this)
+git remote add pb162 https://gitlab.fi.muni.cz/pb162/2023-hw03-templates.git
+# Local repo should be clean and everything should be committed in the <impl> branch
+git status 
+git switch main 
+# Pull changes from pb162/main into local main 
+git pull pb162 main
+# Push those changes to your remote main  on gitlab
+git push origin main 
+git switch <impl>
+# Pull changes from local main into local <impl> brnach.
+# The --rebase option will change history so that your commits stay on top of the history
+git pull --rebase . main 
+# Push those changes to your remote <impl> branch
+# CAREFUL: this is a FORCE push, check twice you are pushing to the correct branch
+# The --force is needed as the previous command changed history (added new commits which were placed under your commits).  
+git push origin <impl> --force
+```
+
+
 
 General information
 -------------------
