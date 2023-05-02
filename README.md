@@ -7,6 +7,7 @@ Homework assignment no. 3, Simple Templates
 
 CHANGELOG
 -------------------
+- 2.5.2023: Added missing empty line in `Outputs.IF`. This has no effect on test result.
 - 2.5.2023: Fixed issue when repeated calls to `Tokenizer#get()` threw an exception in certain situations.  
 - 1.5.2023: Fixed file name `malformed.txt..tpl -> malformed.txt.tpl`
 - 29.4.2023: Fixed extension value in FileTemplateTest#shouldFailToLoadMalformedTemplate
@@ -145,6 +146,7 @@ Can we do inline with if only? Yes we can!
 Can we do inline with else? Sure we can!
             
 BTW: The extra empty line is there on purpose. The next whitespace character following a block command (those with #) is considered part of that command.
+
 We can also do multiple lines.
 Tom is great.
 Now this will be right under.
