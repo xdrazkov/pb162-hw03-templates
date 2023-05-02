@@ -36,6 +36,7 @@ public final class Tokenizer {
 
     private String input;
     private Mode mode;
+    private Mode nextMode;
     private Token lastToken;
 
 
@@ -58,6 +59,15 @@ public final class Tokenizer {
         this.mode = mode;
     }
 
+    private void setNextMode(Mode mode) {
+        this.nextMode = mode;
+    }
+
+    private void switchMode() {
+        this.mode = (nextMode != null) ? nextMode : mode;
+        this.nextMode = null;
+    }
+
     /**
      * @return next token
      * @throws IllegalStateException on unexpected character
@@ -73,7 +83,7 @@ public final class Tokenizer {
     private Token getBlock() {
         // OPEN TOKEN
         if (input.startsWith(Token.Kind.OPEN.getPrefix())) {
-            setMode(Mode.COMMAND);
+            setNextMode(Mode.COMMAND);
             return new Token(Token.Kind.OPEN);
         }
 
@@ -106,7 +116,7 @@ public final class Tokenizer {
 
         // CLOSE TOKEN
         if (input.startsWith(Token.Kind.CLOSE.getPrefix())) {
-            setMode(Mode.TEXT);
+            setNextMode(Mode.TEXT);
             return new Token(Token.Kind.CLOSE);
         }
         // ---
@@ -150,6 +160,7 @@ public final class Tokenizer {
      */
     public Token consume() {
         var token = get();
+        switchMode();
         skip(token.getSize());
 
         if (mode.isSkipWhiteSpace()) {
@@ -160,7 +171,8 @@ public final class Tokenizer {
     }
 
     /**
-     * @return last consumed token;
+     * The same token as returned by last call to {@link #get()}
+     * @return last token;
      */
     public Token getLastToken() {
         return lastToken;

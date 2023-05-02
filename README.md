@@ -7,6 +7,7 @@ Homework assignment no. 3, Simple Templates
 
 CHANGELOG
 -------------------
+- 2.5.2023: Fixed issue when repeated calls to `Tokenizer#get()` threw an exception in certain situations.  
 - 1.5.2023: Fixed file name `malformed.txt..tpl -> malformed.txt.tpl`
 - 29.4.2023: Fixed extension value in FileTemplateTest#shouldFailToLoadMalformedTemplate
 
