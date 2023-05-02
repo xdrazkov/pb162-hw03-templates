@@ -226,7 +226,7 @@ command         =   cmdPrint | cmdIf | cmdFor;
 /*
     final template is a sequnce of <text> and <cmd> in arbitrary order
 */
-template        =   (text | cmd )+
+template        =   (text | command )+
 ```
 
 *Disclaimer: We don't claim that the grammar is 100% formally correct*
